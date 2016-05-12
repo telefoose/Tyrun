@@ -17,19 +17,14 @@ Tycon = {} --Tycon table
   
   Dinos = {} -- Dino table
   
-    for i=1,10 do   -- i = o numero de dino para aparecer
-    Dino = {}
-    Dino.width = 266
-    Dino.height = 131
-    Dino.speed = 400
-    Dino_anim_frame = 1
-            
-    Dino.x = (i-1) * (Dino.width + 1150) + math.random(2400,3400) 
-    Dino.y = 450
+  DinoImage = {}
+  
   for x = 1, 8, 1 do
-       Dino[x] = love.graphics.newImage("Dino " .. x .. ".png")
+    DinoImage[x] = love.graphics.newImage("Dino " .. x .. ".png")
   end
-    table.insert(Dinos, Dino)
+    for i=1,3 do   -- i = o numero de dino para aparecer
+    Dino_anim_frame = 1
+    table.insert(Dinos, {width = 266, height = 131, speed = 400, x = (i-1) * (266 + 1150) + math.random(2400,3400), y = 450})
     
     end
   
@@ -79,7 +74,8 @@ function love.update(dt) ---UPDATE  UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UP
     end
    
    for i,v in ipairs(remDino) do
-     table.remove(Dinos, v)     
+     table.remove(Dinos, v)
+     table.insert(Dinos, {width = 266, height = 131, speed = 400, x = (#Dinos-1) * (266 + 1150) + math.random(2400,3400), y = 450})
      end  
   
   if love.keyboard.isDown("left") or love.keyboard.isDown("a") then -- movimentação horizontal de Tycon
@@ -116,7 +112,7 @@ function love.update(dt) ---UPDATE  UPDATE UPDATE UPDATE UPDATE UPDATE UPDATE UP
       
     
   for i,v in ipairs(Dinos) do -- Movimentação dos dinos
-    v.x = v.x - dt * math.random(400,800)
+    v.x = v.x - dt * math.random(450,850)
     end
   
   
@@ -183,19 +179,19 @@ elseif score <= 2000 then
 
 love.graphics.setColor(255,255,255,255)
 for i,v in ipairs(Dinos) do
-  if v.x <= 850 and v.x >= -200 then
-  love.graphics.draw(Dino[Dino_anim_frame], v.x, v.y, 0, 1, 1) -- animação dos Dinos
+  if v.x <= 850 then
+  love.graphics.draw(DinoImage[Dino_anim_frame], v.x, v.y, 0, 1, 1) -- animação dos Dinos
 
 
 --Hitbox dos Dinos
---[[for ii,vv in ipairs(Dinos) do
+for ii,vv in ipairs(Dinos) do
   love.graphics.setColor(255,0,0,190)
 love.graphics.rectangle("fill",vv.x,vv.y,vv.width - 171, vv.height-100)
 love.graphics.rectangle("fill",vv.x + 95,vv.y + 30,vv.width - 165, vv.height - 30)
 
 love.graphics.setColor(255,0,255,190)
 love.graphics.rectangle("fill",vv.x + 100 ,vv.y + 35,vv.width - 40, vv.height-97)
-end]]
+end
 
 
 
@@ -206,8 +202,8 @@ end
 end
 
 --Hitbox de Tycon
-  --[[love.graphics.setColor(0,255,255,190)
-    love.graphics.rectangle("fill",Tycon.x + 65,Tycon.y + 10,40,40)]]
+  love.graphics.setColor(0,255,255,190)
+    love.graphics.rectangle("fill",Tycon.x + 65,Tycon.y + 10,40,40)
     
   
 end
